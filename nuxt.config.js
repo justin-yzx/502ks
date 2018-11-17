@@ -33,7 +33,8 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '~/plugins/axios'
+    '~/plugins/axios',
+    {src:'~/plugins/vue-infinite-loading', ssr: false},
   ],
 
   /*

@@ -15,6 +15,7 @@
 </template>
 
 <script>
+  import axios from 'axios'
   import bookitem from '@/components/BookItem'
   import bookblock1 from '@/components/BookBlock1'
   import bookblock2 from '@/components/BookBlock2'
@@ -24,16 +25,9 @@
       bookblock1,
       bookblock2,
     },
-    data(){
-      return{
-        bookList:[]
-      }
-    },
-    async created(){
-      let data = await this.$axios.get('/api/getbooklist')
-      if(data.code===200){
-        this.bookList=data.data
-      }
+    async asyncData () {
+      let { data } = await axios.get('/api/getbooklist')
+      return { bookList: data.data }
     },
     methods:{
       clickBook(item){
