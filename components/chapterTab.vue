@@ -7,7 +7,8 @@
       <div
         v-for="item in chapterlist"
         :key="item.chapterid"
-        class="chapter-list">{{ item.chaptername }}</div>
+        class="chapter-list"
+        @click="clickList(item)">{{ item.chaptername }}</div>
       <infinite-loading
         @infinite="infiniteHandler"/>
     </div>
@@ -27,7 +28,7 @@
       return{
         chapterlist:[],
         pagenum:1,
-        pagesize:10,
+        pagesize:30,
         bookname:''
       }
     },
@@ -56,6 +57,9 @@
             $state.complete();
           }
         });
+      },
+      clickList(item){
+        this.$router.push(`/read/${item.chapterid}`)
       }
     }
   }
@@ -91,4 +95,7 @@
       font-size 14px
       color #212832
       padding-left 16px
+      overflow hidden
+      text-overflow ellipsis
+      white-space nowrap
 </style>

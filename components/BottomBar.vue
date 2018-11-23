@@ -1,9 +1,9 @@
 <template>
   <div
-    v-if="show"
+    v-show="show"
     class="bottom-bar">
     <bottomBarSet
-      v-if="tag==1"
+      v-show="tag==1"
       @fontChange="fontChange"
       @colorChange="colorChange"/>
     <chapterTab

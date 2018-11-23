@@ -8,9 +8,6 @@
         :book-data="item"
         @click="clickBook(item)"/>
     </nuxt-link>
-
-    <bookblock1/>
-    <bookblock2/>
   </div>
 </template>
 
@@ -21,9 +18,7 @@
   import bookblock2 from '@/components/BookBlock2'
   export default {
     components:{
-      bookitem,
-      bookblock1,
-      bookblock2,
+      bookitem
     },
     async asyncData () {
       let { data } = await axios.get('/api/getbooklist')
