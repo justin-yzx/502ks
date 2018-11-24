@@ -13,6 +13,7 @@
 </template>
 
 <script>
+  import { BASE_URL } from "@/config";
   import axios from 'axios'
   import BottomBar from '@/components/BottomBar'
   export default {
@@ -22,7 +23,7 @@
     },
     async asyncData({params}){
       console.log(params)
-      let {data}=await axios.get(`/api/getcontent?id=${params.id}`)
+      let {data}=await axios.get(`${BASE_URL}/api/getcontent?id=${params.id}`)
       if(data.code==200){
         return {
           txt:data.data[0]['booktxt'],

@@ -24,12 +24,11 @@
     <chapterTab
       v-if="tag==1"
       :bookid="bookid"/>
-
-
   </div>
 </template>
 
 <script>
+  import { BASE_URL } from "@/config";
   import axios from 'axios'
   import chapterTab from '@/components/chapterTab'
   export default {
@@ -47,7 +46,7 @@
     },
     async asyncData({params}){
       console.log(params)
-      let {data}=await axios.get('/api/getbookinfo?id='+params.id)
+      let {data}=await axios.get(BASE_URL+'/api/getbookinfo?id='+params.id)
       if(data.code==200){
         return {
           bookname:data.data[0]['bookname'],
