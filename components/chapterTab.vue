@@ -7,6 +7,7 @@
       <div
         v-for="item in chapterlist"
         :key="item.chapterid"
+        :class="item.num==num?'active':''"
         class="chapter-list"
         @click="clickList(item)">{{ item.chaptername }}</div>
       <infinite-loading
@@ -22,6 +23,10 @@
       bookid:{
         type: String,
         default: ''
+      },
+      num:{
+        type: Number,
+        default: 0
       }
     },
     data(){
@@ -59,13 +64,16 @@
         });
       },
       clickList(item){
-        this.$router.push(`/read/${item.chapterid}`)
+        this.$router.push(`/read/${item.chapterid},${item.num}`)
       }
     }
   }
 </script>
 
 <style lang="stylus" scoped>
+.active{
+  color #3BC18E !important
+}
 .chapter-tab
   position fixed
   left 0

@@ -1,12 +1,35 @@
 <template>
   <div>
+    <Defult v-if="!bookid"/>
     <div
-      :style="{background:bgList[selectTag],color:txtList[selectTag],fontSize:fontList[fontTag]}"
+      v-if="bookid"
+      :style="{background:bgList[selectTag],color:txtList[selectTag]}"
       class="read-content"
-      @click="barTag=!barTag">{{ txt }}</div>
+      @click="barTag=!barTag">
+      <div
+        v-if="thisNum"
+        class="title">
+        {{ thisNum.chaptername }}
+      </div>
+      <div :style="{fontSize:fontList[fontTag]}">
+        {{ txt }}
+      </div>
+      <div class="btn-box">
+        <div
+          v-if="lastNum"
+          class="btn"
+          @click="push(lastNum)">上一章</div>
+        <div
+          v-if="nextNum"
+          class="btn"
+          @click="push(nextNum)">下一章</div>
+      </div>
+    </div>
+
     <BottomBar
       :show="barTag"
       :bookid="bookid"
+      :num="thisNum.num"
       @fontChange="fontChange"
       @colorChange="colorChange"/>
   </div>
@@ -16,28 +39,39 @@
   import { BASE_URL } from "@/config";
   import axios from 'axios'
   import BottomBar from '@/components/BottomBar'
+  import Defult from '@/components/Defult'
   export default {
     name: "Id",
     components:{
-      BottomBar
+      BottomBar,
+      Defult,
     },
     async asyncData({params}){
-      console.log(params)
-      let {data}=await axios.get(`${BASE_URL}/api/getcontent?id=${params.id}`)
+      let req=params.id.split(',')
+      let {data}=await axios.get(`${BASE_URL}/api/getcontent?id=${req[0]}&num=${req[1]}`)
       if(data.code==200){
         return {
-          txt:data.data[0]['booktxt'],
-          bookid:data.data[0]['bookid']
+          txt:data.data['book']['booktxt'],
+          bookid:data.data['book']['bookid'],
+          lastNum:data.data['lastNum'],
+          nextNum:data.data['nextNum'],
+          thisNum:data.data['thisNum'],
         }
       }else {
         return{
           txt:'',
-          bookid:''
+          bookid:'',
+          lastNum:'',
+          nextNum:'',
+          thisNum:'',
         }
       }
     },
     data(){
       return{
+        thisNum:'',
+        lastNum:'',
+        nextNum:'',
         txt:'',
         bookid:'',
         selectTag:0,
@@ -72,6 +106,9 @@
       this.fontTag=localStorage.font?Number(localStorage.font):2
     },
     methods:{
+      push(item){
+        this.$router.push(`/read/${item.chapterid},${item.num}`)
+      },
       colorChange(index){
         this.selectTag=index
       },
@@ -95,8 +132,24 @@
 
 <style lang="stylus" scoped>
   .read-content
+    min-height 700px
     white-space: pre-line;
     font-size 14px
     text-indent 2em
     padding 20px
+    .title
+      font-size 20px
+  .btn-box
+    display flex
+    justify-content space-around
+    margin-bottom 50px
+    .btn
+      text-indent 0
+      text-align center
+      width 80px
+      height 30px
+      line-height 30px
+      background #3BC18E
+      color white
+      border-radius 5px
 </style>

@@ -45,7 +45,6 @@
       }
     },
     async asyncData({params}){
-      console.log(params)
       let {data}=await axios.get(BASE_URL+'/api/getbookinfo?id='+params.id)
       if(data.code==200){
         return {

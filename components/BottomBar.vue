@@ -9,6 +9,7 @@
     <chapterTab
       v-if="tag==0"
       :bookid="bookid"
+      :num="num"
     />
     <div class="bar-box">
       <div
@@ -56,6 +57,10 @@
       bookid:{
         type: String,
         default: ''
+      },
+      num:{
+        type: Number,
+        default: 0
       }
     },
     data(){
