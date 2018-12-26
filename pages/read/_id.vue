@@ -29,7 +29,7 @@
     <BottomBar
       :show="barTag"
       :bookid="bookid"
-      :num="thisNum.num"
+      :num="thisNum?thisNum.num:0"
       @fontChange="fontChange"
       @colorChange="colorChange"/>
   </div>
