@@ -51,7 +51,14 @@
       let {data}=await axios.get(`${BASE_URL}/api/getcontent?id=${req[0]}&num=${req[1]}`)
       if(data.code==200){
         return {
-          txt:data.data['book']['booktxt'],
+          txt:data.data['book']['booktxt']
+            .replace(/无弹窗小说网/g, "")
+            .replace(/www.530p.com/ig, "")
+            .replace(/DouLaidu/ig, "")
+            .replace(/www/ig, "")
+            .replace(/com/ig, "")
+            .replace(/txtxiazai/ig, "")
+            .replace(/org/ig, ""),
           bookid:data.data['book']['bookid'],
           lastNum:data.data['lastNum'],
           nextNum:data.data['nextNum'],
@@ -65,6 +72,11 @@
           nextNum:'',
           thisNum:'',
         }
+      }
+    },
+    head(){
+      return{
+        title: this.thisNum.chaptername
       }
     },
     data(){
@@ -103,6 +115,18 @@
       }
     },
     mounted(){
+      let oldNum=localStorage.getItem(this.bookid)
+      if(oldNum !== null){
+        try {
+          oldNum = parseInt(oldNum)
+        }catch (e) {
+          oldNum = 1
+        }
+      }
+      if(oldNum<this.thisNum.num){
+        localStorage.setItem(this.bookid+'',this.thisNum.num)
+      }
+
       this.fontTag=localStorage.font?Number(localStorage.font):2
     },
     methods:{
@@ -138,7 +162,11 @@
     text-indent 2em
     padding 20px
     .title
+      white-space: normal
       font-size 20px
+      font-weight: 600;
+      padding-left 0
+      text-indent 0px
   .btn-box
     display flex
     justify-content space-around

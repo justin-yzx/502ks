@@ -27,7 +27,7 @@
     },
     methods:{
       clickBook(item){
-        console.log(item)
+
       }
     }
   }

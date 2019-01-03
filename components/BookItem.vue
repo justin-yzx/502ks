@@ -12,7 +12,7 @@
       </div>
       <div class="book-bottom">
         <div class="book-auther">{{ bookData.bookauther }}</div>
-        <div class="book-classify">{{ bookData.type }}</div>
+        <div class="book-classify">{{ type[bookData.type] }}</div>
       </div>
     </div>
   </div>
@@ -27,6 +27,19 @@
           return {}
         },
         type: Object
+      }
+    },
+    data(){
+      return{
+        type:{
+          'xuanhuan':'玄幻',
+          'xianxia':'仙侠',
+          'junshi':'军事',
+          'lishi':'历史',
+          'yanqing':'言情',
+          'dushi':'都市',
+          'wuxia':'武侠',
+        }
       }
     },
     methods:{

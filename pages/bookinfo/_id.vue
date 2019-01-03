@@ -23,6 +23,8 @@
     </div>
     <chapterTab
       v-if="tag==1"
+      :tag.sync="tag"
+      :num="oldNum"
       :bookid="bookid"/>
   </div>
 </template>
@@ -42,6 +44,7 @@
         tag:0,
         descTag:true,
         muName:'',
+        oldNum:1
       }
     },
     async asyncData({params}){
@@ -60,12 +63,28 @@
         }
       }
     },
-    created(){
+    head(){
+      return{
+        title: this.bookname,
+        meta:[
+          { name: 'description', content: this.bookname+'--'+this.desc }
+        ]
+      }
+    },
+    mounted(){
       this.bookid=this.$route.params.id
+      let oldNum=localStorage.getItem(this.bookid)
+      if(oldNum !== null){
+        try {
+          this.oldNum = parseInt(oldNum)
+        }catch (e) {
+          this.oldNum = 1
+        }
+      }
       this.$axios.get('/api/getchapterlist', {
         params: {
           id: this.bookid,
-          pagenum: 1,
+          pagenum: this.oldNum,
           pagesize: 1,
         },
       }).then(res=>{
@@ -82,8 +101,8 @@
     height 144px
     background #F9F9F9
     .book-img{
-      width 85px
-      height 120px
+      width 80px
+      height 129px
       display block
       margin-left 16px
       padding-top 16px

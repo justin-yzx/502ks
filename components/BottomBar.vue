@@ -3,19 +3,20 @@
     v-show="show"
     class="bottom-bar">
     <bottomBarSet
-      v-show="tag==1"
+      v-show="tag==0"
       @fontChange="fontChange"
       @colorChange="colorChange"/>
     <chapterTab
-      v-if="tag==0"
+      v-if="tag==1"
+      :tag.sync="tag"
       :bookid="bookid"
       :num="num"
     />
     <div class="bar-box">
       <div
-        :class="{active:tag==0}"
+        :class="{active:tag==1}"
         class="bar-item"
-        @click="tag=0">
+        @click="tag=1">
         <img
           class="img1"
           src="@/assets/read_icon_catalog_nor.png">
@@ -25,9 +26,9 @@
         <div>目录</div>
       </div>
       <div
-        :class="{active:tag===1}"
+        :class="{active:tag===0}"
         class="bar-item"
-        @click="tag=1">
+        @click="tag=0">
         <img
           class="img1"
           src="@/assets/read_icon_setting_nor.png">
