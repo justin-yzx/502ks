@@ -103,7 +103,7 @@
         });
       },
       clickList(item) {
-        this.$router.push(`/book/${item.chapterid}`)
+        location.href=`/book/${item.chapterid}`
       }
     },
   }
