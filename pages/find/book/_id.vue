@@ -48,7 +48,7 @@
     },
     async asyncData({params}){
       let req=params.id.split(',')
-      let {data}=await axios.get(`${BASE_URL}/api/getcontent?id=${req[0]}&num=${req[1]}`)
+      let {data}=await axios.get(`${BASE_URL}/api/getcontent?id=${req[0]}`)
       if(data.code==200){
         return {
           txt:data.data['book']['booktxt']
@@ -131,7 +131,7 @@
     },
     methods:{
       push(item){
-        this.$router.push(`/read/${item.chapterid},${item.num}`)
+        this.$router.push(`/book/${item.chapterid}`)
       },
       colorChange(index){
         this.selectTag=index
