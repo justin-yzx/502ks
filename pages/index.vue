@@ -1,5 +1,12 @@
 <template>
   <div>
+    <backtop/>
+    <div
+      class="search"
+      @click="search">
+      <img src="@/assets/search.png">
+      <span>搜索</span>
+    </div>
     <bookblock1
       :bookitem="bookData[0]"
       title="不看后悔系列"
@@ -33,11 +40,13 @@
   import bookitem from '@/components/BookItem'
   import bookblock1 from '@/components/BookBlock1'
   import bookblock2 from '@/components/BookBlock2'
+  import backtop from '@/components/backtop'
   export default {
     components:{
       bookitem,
       bookblock1,
-      bookblock2
+      bookblock2,
+      backtop
     },
     async asyncData () {
       let { data } = await axios.get(BASE_URL+'/api/getindexlist')
@@ -58,10 +67,33 @@
           return []
         }
       }
+    },
+    methods:{
+      search(item){
+        this.$router.push('/search')
+      }
     }
   }
 </script>
 
-<style>
-
+<style scoped lang="stylus">
+  .search{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height 40px
+    border 8px solid #f4f5f7;
+    img{
+      width: 16px;
+      height: 16px;
+      display: block;
+    }
+    span{
+      padding-left 8px
+      height 16px
+      line-height 16px
+      font-size 12px
+      color #7f828b
+    }
+  }
 </style>
