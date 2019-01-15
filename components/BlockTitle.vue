@@ -1,10 +1,17 @@
 <template>
-  <div class="title">小说模块2</div>
+  <div class="title">{{ title }}</div>
 </template>
 
 <script>
   export default {
-    name: "BlockTitle"
+    name: "BlockTitle",
+    props:{
+      title:{
+        type:String,
+        defult:'标题',
+        required:true
+      }
+    }
   }
 </script>
 

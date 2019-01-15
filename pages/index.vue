@@ -1,13 +1,29 @@
 <template>
   <div>
-    <nuxt-link
-      v-for="(item,index) in bookList"
-      :key="index"
-      :to="`/bookinfo/${item.bookid}`">
-      <bookitem
-        :book-data="item"
-        @click="clickBook(item)"/>
-    </nuxt-link>
+    <bookblock1
+      :bookitem="bookData[0]"
+      title="不看后悔系列"
+    />
+    <bookblock2
+      :bookitem="bookData[1]"
+      title="本本经典再现"
+    />
+    <bookblock1
+      :bookitem="bookData[2]"
+      title="必读完本系列"
+    />
+    <bookblock2
+      :bookitem="bookData[3]"
+      title="主编精选推荐"
+    />
+    <bookblock1
+      :bookitem="bookData[4]"
+      title="本周人气热书"
+    />
+    <bookblock2
+      :bookitem="bookData[5]"
+      title="老书虫必读"
+    />
   </div>
 </template>
 
@@ -19,15 +35,28 @@
   import bookblock2 from '@/components/BookBlock2'
   export default {
     components:{
-      bookitem
+      bookitem,
+      bookblock1,
+      bookblock2
     },
     async asyncData () {
-      let { data } = await axios.get(BASE_URL+'/api/getbooklist')
+      let { data } = await axios.get(BASE_URL+'/api/getindexlist')
       return { bookList: data.data }
     },
-    methods:{
-      clickBook(item){
-
+    computed:{
+      bookData(){
+        if(this.bookList.length>35){
+          return [
+            this.bookList.slice(0,6),
+            this.bookList.slice(6,12),
+            this.bookList.slice(12,18),
+            this.bookList.slice(18,24),
+            this.bookList.slice(24,30),
+            this.bookList.slice(30,36),
+          ]
+        }else {
+          return []
+        }
       }
     }
   }

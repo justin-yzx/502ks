@@ -1,11 +1,12 @@
 <template>
   <div class="bookline">
     <div
-      v-for="item in 3"
-      :key="item"
-      class="book-box">
-      <img src="https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=136768666,3306654460&fm=179&app=42&f=JPEG?w=115&h=161">
-      <div class="book-name">{{ name[item] }}</div>
+      v-for="(item,index) in bookitem"
+      :key="index"
+      class="book-box"
+      @click="clickItem(item)">
+      <img :src="item.img">
+      <div class="book-name">{{ item.bookname }}</div>
     </div>
   </div>
 </template>
@@ -13,9 +14,16 @@
 <script>
   export default {
     name: "ThreeBook",
-    data(){
-      return{
-        name:['斗破苍穹','斗破苍穹斗破苍穹','斗破苍穹斗破苍穹斗破苍穹','斗破苍穹斗破苍穹斗破苍穹']
+    props:{
+      bookitem:{
+        defult:()=>[],
+        type:Array,
+        required:true
+      }
+    },
+    methods:{
+      clickItem(item){
+        this.$router.push('/bookinfo/'+item.bookid)
       }
     }
   }

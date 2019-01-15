@@ -1,10 +1,16 @@
 <template>
   <div class="block">
-    <blocktitle/>
-    <threebook/>
+    <blocktitle
+      :title="title"
+    />
+    <threebook
+      :bookitem="bookitem.slice(0,3)"
+    />
     <bookitem
-      v-for="item in 2"
-      :key="item"/>
+      v-for="(item,index) in bookitem.slice(3,6)"
+      :key="index"
+      :book-data="item"
+    />
   </div>
 </template>
 
@@ -13,11 +19,23 @@
   import bookitem from '@/components/BookItem'
   import blocktitle from '@/components/BlockTitle'
   export default {
-    name: "BookBlock1",
+    name: "BookBlock2",
     components:{
       threebook,
       bookitem,
       blocktitle
+    },
+    props:{
+      bookitem:{
+        defult:()=>[],
+        type:Array,
+        required:true
+      },
+      title:{
+        type:String,
+        defult:'标题',
+        required:true
+      }
     }
   }
 </script>

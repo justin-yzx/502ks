@@ -44,7 +44,7 @@
     },
     methods:{
       clickItem(){
-        this.$emit('click')
+        this.$router.push('/bookinfo/'+this.bookData.bookid)
       }
     }
   }

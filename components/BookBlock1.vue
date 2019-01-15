@@ -1,9 +1,13 @@
 <template>
   <div class="block">
-    <blocktitle/>
+    <blocktitle
+      :title="title"
+    />
     <bookitem
-      v-for="item in 3"
-      :key="item"/>
+      v-for="(item,index) in bookitem"
+      :key="index"
+      :book-data="item"
+    />
   </div>
 </template>
 
@@ -15,6 +19,18 @@
     components:{
       bookitem,
       blocktitle
+    },
+    props:{
+      bookitem:{
+        defult:()=>[],
+        type:Array,
+        required:true
+      },
+      title:{
+        type:String,
+        defult:'标题',
+        required:true
+      }
     }
   }
 </script>
