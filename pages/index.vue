@@ -81,7 +81,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height 40px
+    height 45px
     border 8px solid #f4f5f7;
     img{
       width: 16px;
