@@ -50,7 +50,7 @@
   }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
   .book-item
     position relative
     height 145px

@@ -15,7 +15,7 @@
   }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
   .title
     height 38px
     line-height 54px

@@ -13,30 +13,44 @@
       :class="descTag?'desc-little':''"
       class="book-desc "
       @click="descTag=!descTag">
-      {{ desc }}
+      {{ desc?desc:'暂无简介' }}
     </div>
     <div
       class="ml-list"
-      @click="tag=1">
+      @click="gochapter">
       <span class="ml-title">目录</span>
       <span>{{ muName }}</span>
     </div>
-    <chapterTab
-      v-if="tag==1"
-      :tag.sync="tag"
-      :num="oldNum"
-      :bookid="bookid"/>
+    <div class="cnxh">
+      <div class="title">
+        精选推荐
+      </div>
+      <div class="cnxh-box">
+        <threebook
+          v-for="(item,index) in cnxhList"
+          :key="index"
+          :bookitem="item"/>
+      </div>
+    </div>
+    <div class="bottom">
+      <div 
+        class="bottom-btn join" 
+        @click="join">加入书架</div>
+      <div 
+        class="bottom-btn" 
+        @click="read">立即阅读</div>
+    </div>
   </div>
 </template>
 
 <script>
   import { BASE_URL } from "@/config";
   import axios from 'axios'
-  import chapterTab from '@/components/chapterTab'
+  import threebook from '@/components/ThreeBook'
   export default {
     name: "Id",
     components:{
-      chapterTab
+      threebook
     },
     data(){
       return{
@@ -44,7 +58,9 @@
         tag:0,
         descTag:true,
         muName:'',
-        oldNum:1
+        muId:'',
+        oldNum:1,
+        bookList:[]
       }
     },
     async asyncData({params}){
@@ -71,6 +87,19 @@
         ]
       }
     },
+    computed:{
+      cnxhList(){
+        if(this.bookList.length>8){
+          return [
+            this.bookList.slice(0,3),
+            this.bookList.slice(3,6),
+            this.bookList.slice(6,9)
+          ]
+        }else {
+          return []
+        }
+      }
+    },
     mounted(){
       this.bookid=this.$route.params.id
       let oldNum=localStorage.getItem(this.bookid)
@@ -89,9 +118,29 @@
         },
       }).then(res=>{
         if(res.code==200){
-          this.muName=res.data[0]['chaptername']
+          this.muName=res.data.length>0?res.data[0]['chaptername']:''
+          this.muId=res.data.length>0?res.data[0]['chapterid']:''
         }
       })
+      axios.get(BASE_URL+'/api/getpageinforecommend').then(res=>{
+        let data=res.data
+        this.bookList=data.data
+      })
+    },
+    methods:{
+      gochapter(){
+        this.$router.push('/chapterlist/'+this.bookid)
+      },
+      join(){
+        //todo 加入书架
+      },
+      read(){
+        if(this.muId){
+          location.href=`/book/${this.muId}`
+        }else {
+          toast('暂无书籍信息')
+        }
+      }
     }
   }
 </script>
@@ -164,5 +213,35 @@
     }
   }
 
+  .cnxh{
+    margin-bottom 50px
+    border-bottom 8px solid rgb(244,245,247)
+    padding-bottom 10px
+    .title{
+      font-size 16px
+      color #000
+      font-weight 600
+      margin 10px 0 5px
+      padding 0 16px
+    }
+  }
+
+  .bottom{
+    position fixed
+    bottom 0
+    width 100%
+    height 50px
+    line-height 50px
+    display flex
+    background white
+    .bottom-btn{
+      width 50%
+      text-align center
+    }
+    .join{
+      background #26C37D
+      color #fff
+    }
+  }
 </style>
 

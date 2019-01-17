@@ -40,7 +40,7 @@
   }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
   .block
     border-bottom 8px solid #f4f5f7
 </style>

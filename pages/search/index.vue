@@ -1,5 +1,6 @@
 <template>
   <div>
+    <backtop/>
     <div class="search-top">
       <div class="search-box">
         <img src="@/assets/search.png">
@@ -56,11 +57,15 @@
       </div>
     </div>
     <div class="book-list">
-      <bookitem
+      <div
         v-for="(item,index) in bookItem"
         :key="index"
-        :book-data="item"
-      />
+      >
+        <bookitem
+          v-if="item !== 1"
+          :book-data="item"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -70,14 +75,16 @@
   import axios from 'axios'
   import bookitem from '@/components/BookItem'
   import threebook from '@/components/ThreeBook'
+  import backtop from '@/components/backtop'
   export default {
     name: "Search",
     components:{
       bookitem,
-      threebook
+      threebook,
+      backtop
     },
     async asyncData () {
-      let { data } = await axios.get(BASE_URL+'/api/getindexlist')
+      let { data } = await axios.get(BASE_URL+'/api/getsearchrecommend')
       return { bookList: data.data }
     },
     data(){
@@ -109,7 +116,7 @@
         if(this.str.length === 0){
           return
         }
-        this.bookItem=[{}]
+        this.bookItem=[1]
         this.first=false
         let list = JSON.parse(localStorage.searchList?localStorage.searchList:"[]")
         if( list.indexOf(this.str)===-1){

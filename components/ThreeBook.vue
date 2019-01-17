@@ -29,7 +29,7 @@
   }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
   .bookline
     margin-top 16px
     margin-bottom 16px
