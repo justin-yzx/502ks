@@ -1,183 +1,306 @@
 <template>
-  <div>
-    <Defult v-if="!bookid"/>
+  <div 
+    id="read" 
+    :style="{ backgroundColor: bodyBg}">
     <div
-      v-if="bookid"
-      :style="{background:bgList[selectTag],color:txtList[selectTag]}"
-      class="read-content"
-      @click="barTag=!barTag">
-      <div
-        v-if="thisNum"
-        class="title">
-        {{ thisNum.chaptername }}
-      </div>
-      <div :style="{fontSize:fontList[fontTag]}">
-        {{ txt }}
-      </div>
-      <div class="btn-box">
-        <div
-          v-if="lastNum"
-          class="btn"
-          @click="push(lastNum)">上一章</div>
-        <div
-          v-if="nextNum"
-          class="btn"
-          @click="push(nextNum)">下一章</div>
+      :style="{ fontSize: fontSize+'px',color:colorFont}" 
+      class="content-box-p" 
+      @click="showMenu=!showMenu">
+      <div style="font-size: 18px">{{ thisNum.chaptername }}</div>
+      <div>{{ content }}</div>
+    </div>
+    <div 
+      v-if="showMenu" 
+      class="top-operate-zone">
+      <span 
+        class="top-back" 
+        @click="back"><img src="@/assets/back-w.png"></span>
+      <div class="top-right">
+        <span @click="gohome">首页</span>
+        <span @click="join">加入书架</span>
       </div>
     </div>
-
-    <BottomBar
-      :show="barTag"
-      :bookid="bookid"
-      :num="thisNum?thisNum.num:0"
-      @fontChange="fontChange"
-      @colorChange="colorChange"/>
+    <div class="operate-zone">
+      <div 
+        v-if="setMenu && showMenu" 
+        class="zone-2">
+        <div class="colors-arr"><span 
+          v-for="(item,index) in colorArr"
+          :key="index"
+          :class="borderIndex==index?'active':''"
+          :style="{ backgroundColor: colorArr[index]}"
+          @click="changeBg(index)"/></div>
+        <div class="font-sizes">
+          <span @click="changeSize('reduce')">Aa-</span>
+          <span @click="changeSize('add')">Aa+</span>
+        </div>
+      </div>
+      <div 
+        v-if="showMenu" 
+        class="zone-1">
+        <span><img 
+          src="@/assets/last.png" 
+          @click="previous"><em>上一章</em></span>
+        <span><img src="@/assets/content.png"><em @click="mulu">目录</em></span>
+        <span @click="setMenu=!setMenu"><img src="@/assets/set.png"><em>设置</em></span>
+        <span 
+          v-if="!nightDay" 
+          @click="setDayNight('night')"><img src="@/assets/night.png"><em>夜间</em></span>
+        <span 
+          v-else 
+          @click="setDayNight('day')"><img src="@/assets/day.png"><em>白天</em></span>
+        <span><img 
+          src="@/assets/next.png" 
+          @click="nuxt"><em>下一章</em></span>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-  import { BASE_URL } from "@/config";
+  import {BASE_URL} from "@/config";
   import axios from 'axios'
-  import BottomBar from '@/components/BottomBar'
-  import Defult from '@/components/Defult'
+  import replaceStr from './replaceStr'
+
   export default {
-    name: "Id",
-    components:{
-      BottomBar,
-      Defult,
-    },
-    async asyncData({params}){
-      let req=params.id.split(',')
-      let {data}=await axios.get(`${BASE_URL}/api/getcontent?id=${req[0]}`)
-      if(data.code==200){
+    async asyncData({params}) {
+      let req = params.id.split(',')
+      let {data} = await axios.get(`${BASE_URL}/api/getcontent?id=${req[0]}`)
+      if (data.code == 200) {
         return {
-          txt:data.data['book']['booktxt']
-            .replace(/无弹窗小说网/g, "")
-            .replace(/www.530p.com/ig, "")
-            .replace(/DouLaidu/ig, "")
-            .replace(/www/ig, "")
-            .replace(/com/ig, "")
-            .replace(/txtxiazai/ig, "")
-            .replace(/org/ig, ""),
-          bookid:data.data['book']['bookid'],
-          lastNum:data.data['lastNum'],
-          nextNum:data.data['nextNum'],
-          thisNum:data.data['thisNum'],
+          content: replaceStr(data.data['book']['booktxt']),
+          bookid: data.data['book']['bookid'],
+          lastNum: data.data['lastNum'],
+          nextNum: data.data['nextNum'],
+          thisNum: data.data['thisNum'],
         }
-      }else {
-        return{
-          txt:'',
-          bookid:'',
-          lastNum:'',
-          nextNum:'',
-          thisNum:'',
+      } else {
+        return {
+          content: '',
+          bookid: '',
+          lastNum: '',
+          nextNum: '',
+          thisNum: '',
         }
       }
     },
-    head(){
-      return{
+    head() {
+      return {
         title: this.thisNum.chaptername
       }
     },
-    data(){
-      return{
-        thisNum:'',
-        lastNum:'',
-        nextNum:'',
-        txt:'',
-        bookid:'',
-        selectTag:0,
-        fontTag:2,
-        barTag:false,
-        bgList:[
-          "#FAF2DE",
-          "#1D1D1D",
-          "#D6EAD5",
-          "#F1E2CD",
-          "#F7E3EA",
-          "#E5F8EC"
-        ],
-        txtList:[
-          "#302C22",
-          "#515151",
-          "#30342F",
-          "#413729",
-          "#912D42",
-          "#2E523D"
-        ],
-        fontList:[
-          '10px',
-          '12px',
-          '14px',
-          '16px',
-          '18px',
-        ]
+    data() {
+      return {
+        colorArr: ['#d1f9d5', '#f0e0c5', '#ffddef', '#e4e4e4'],
+        bodyBg: '#d1f9d5', //整体背景
+        borderIndex: 0,//色块
+        fontSize: '16',//字体大小
+        nightDay: false,
+        showMenu: false,
+        setMenu: false,
+        colorFont: '#333',
       }
     },
-    mounted(){
-      let oldNum=localStorage.getItem(this.bookid)
-      if(oldNum !== null){
-        try {
-          oldNum = parseInt(oldNum)
-        }catch (e) {
-          oldNum = 1
+    mounted () {
+      this.bodyBg = localStorage.getItem('bgSave') ? localStorage.getItem('bgSave') : this.colorArr[0];
+      this.borderIndex = localStorage.getItem('bgSaveIndex') ? localStorage.getItem('bgSaveIndex') : 0;
+      this.fontSize = localStorage.getItem('fontSizeSave') ? localStorage.getItem('fontSizeSave') : this.fontSize;
+      this.colorFont = localStorage.getItem('colorFont') ? localStorage.getItem('colorFont') : this.colorFont;
+    },
+    methods: {
+      back(){
+        location.href='/bookinfo/'+this.bookid
+      },
+      mulu(){
+        location.href='/chapterlist/'+this.bookid
+      },
+      previous(){
+        if(!this.lastNum){
+          toast('已经是第一章喽~')
+          return
         }
-      }
-      if(oldNum<this.thisNum.num){
-        localStorage.setItem(this.bookid+'',this.thisNum.num)
-      }
+        location.href='/book/'+this.lastNum.chapterid
+      },
+      nuxt(){
+        if(!this.nextNum){
+          toast('已经是最后一章喽~')
+          return
+        }
+        location.href='/book/'+this.nextNum.chapterid
+      },
+      gohome(){
+        location.href='/'
+      },
+      join(){
+        //todo 加入书架
+        toast('敬请期待')
+      },
+      changeBg(index) {
+        this.nightDay = false;
+        this.bodyBg = this.colorArr[index];
+        localStorage.setItem('bgSave', this.bodyBg);
+        this.borderIndex = index;
+        localStorage.setItem('bgSaveIndex', this.borderIndex);
+        localStorage.setItem('colorFont', '#333');
+        this.colorFont = "#333";
+      },
+      changeSize(way) {
+        if (way == 'reduce') {
+          if (this.fontSize == 10) {
+            toast('字体不能再小了..');
+            return false
+          }
+          this.fontSize = parseInt(this.fontSize) - 2;
+          localStorage.setItem('fontSizeSave', this.fontSize)
+        } else if (way == 'add') {
+          if (this.fontSize == 20) {
+            toast('字体不能再大了..');
+            return false
+          }
+          this.fontSize = parseInt(this.fontSize) + 2;
+          localStorage.setItem('fontSizeSave', this.fontSize)
+        }
+      },
+      //设置白天夜间模式
+      setDayNight(mode) {
+        console.log(mode)
+        if (mode == 'day') {
+          this.nightDay = false;
+          this.colorFont = "#333";
+          localStorage.setItem('colorFont', '#333');
+          if (localStorage.getItem('bgSave') == 'rgba(0,0,0,.7)') {
+            this.bodyBg = this.colorArr[this.borderIndex];
+          } else {
+            this.bodyBg = localStorage.getItem('bgSave') ? localStorage.getItem('bgSave') : this.bodyBg;
 
-      this.fontTag=localStorage.font?Number(localStorage.font):2
-    },
-    methods:{
-      push(item){
-        location.href=`/book/${item.chapterid}`
-      },
-      colorChange(index){
-        this.selectTag=index
-      },
-      fontChange(index){
-        if(index===1&&this.fontTag===4){
-          return
+          }
+          localStorage.setItem('bgSave', this.bodyBg);
+        } else if (mode == 'night') {
+          this.nightDay = true;
+          this.bodyBg = 'rgba(0,0,0,.7)';
+          this.colorFont = "#989898";
+          localStorage.setItem('bgSave', this.bodyBg);
+          localStorage.setItem('colorFont', '#989898');
         }
-        if(index===0&&this.fontTag===0){
-          return
-        }
-        if(index){
-          this.fontTag++
-        }else {
-          this.fontTag--
-        }
-        localStorage.font=this.fontTag
       }
     }
   }
 </script>
 
 <style lang="stylus" scoped>
-  .read-content
-    min-height 700px
+
+  #read .whiteColor {
+    color: #989898;
+  }
+
+  .content-box-p {
+    min-height 800px
+    padding: 50px 16px 130px;
     white-space: pre-line;
-    font-size 14px
-    text-indent 2em
-    padding 20px
-    .title
-      white-space: normal
-      font-size 20px
-      font-weight: 600;
-      padding-left 0
-      text-indent 0px
-  .btn-box
-    display flex
-    justify-content space-around
-    margin-bottom 50px
-    .btn
-      text-indent 0
-      text-align center
-      width 80px
-      height 30px
-      line-height 30px
-      background #3BC18E
-      color white
-      border-radius 5px
+    font-weight: 300;
+  }
+
+  .top-operate-zone {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 500;
+    height: 44px;
+    background: #333;
+  }
+
+  .top-back {
+    float: left;
+    padding: 10px;
+  }
+
+  .top-back img {
+    width: 22px;
+    opacity: .8;
+  }
+
+  .top-right {
+    float: right;
+    margin-right: 16px;
+  }
+
+  .top-right span {
+    margin-left: 10px;
+    line-height: 44px;
+    color: #fff;
+    font-weight: 300;
+  }
+
+  .operate-zone {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 500;
+  }
+
+  .zone-1 {
+    color: #fff;
+    background: #333;
+    padding: 5px 0;
+    overflow: hidden;
+  }
+
+  .zone-1 span {
+    width: 20%;
+    display: block;
+    float: left;
+    text-align: center;
+  }
+
+  .zone-1 span img {
+    display: block;
+    width: 22px;
+    height: 22px;
+    margin: 0px auto;
+  }
+
+  .zone-1 span em {
+    font-style: normal;
+    font-size: 14px;
+    font-weight: 300;
+  }
+
+  .zone-2 {
+    background: rgba(0, 0, 0, .4);
+    padding: 10px;
+    overflow: hidden;
+  }
+
+  .colors-arr {
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+
+  .colors-arr span, .font-sizes span {
+    width: 40px;
+    height: 20px;
+    display: block;
+    float: left;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    margin-right: 10px;
+  }
+
+  .colors-arr span.active {
+    border: 2px solid #26C37D;
+  }
+
+  .font-sizes span {
+    color: #fff;
+    background: rgba(0, 0, 0, .4);
+    text-align: center;
+    line-height: 20px;
+    font-size: 12px;
+  }
 </style>

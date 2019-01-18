@@ -133,6 +133,7 @@
       },
       join(){
         //todo 加入书架
+        toast('敬请期待')
       },
       read(){
         if(this.muId){
