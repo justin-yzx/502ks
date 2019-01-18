@@ -17,7 +17,7 @@ export default function replaceStr(str) {
     .replace(/ｂｏｏｋ．ｚｈｕｉｋｅ．ｎｅｔ/ig, "")
     .replace(/看小说就到小说网/ig, "")
     .replace(/无弹窗广告小说网/ig, "")
-    .replace(/看小说就到小说网/ig, "")
+    .replace(/w/ig, "")
     .replace(/看小说就到小说网/ig, "")
     .replace(/看小说就到小说网/ig, "")
 }

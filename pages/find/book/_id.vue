@@ -18,6 +18,14 @@
       <div class="top-right">
         <span @click="gohome">首页</span>
         <span @click="join">加入书架</span>
+        <img
+          v-if="readFlag!==2"
+          src="@/assets/play.png"
+          @click="read">
+        <img
+          v-if="readFlag===2"
+          src="@/assets/stop.png"
+          @click="read">
       </div>
     </div>
     <div class="operate-zone">
@@ -99,22 +107,56 @@
         showMenu: false,
         setMenu: false,
         colorFont: '#333',
+        readFlag:1,
       }
     },
     mounted () {
+      try {
+        window.speechSynthesis.cancel()
+      }catch (e) {}
       this.bodyBg = localStorage.getItem('bgSave') ? localStorage.getItem('bgSave') : this.colorArr[0];
       this.borderIndex = localStorage.getItem('bgSaveIndex') ? localStorage.getItem('bgSaveIndex') : 0;
       this.fontSize = localStorage.getItem('fontSizeSave') ? localStorage.getItem('fontSizeSave') : this.fontSize;
       this.colorFont = localStorage.getItem('colorFont') ? localStorage.getItem('colorFont') : this.colorFont;
     },
     methods: {
+      read(){
+        try {
+          if(this.readFlag === 1){
+            var msg = new SpeechSynthesisUtterance(this.content);
+            window.speechSynthesis.cancel()
+            setTimeout(()=>{
+              window.speechSynthesis.speak(msg);
+            },200)
+            this.readFlag=2
+          }else if(this.readFlag === 2){
+            window.speechSynthesis.pause()
+            this.readFlag=3
+          }else {
+            window.speechSynthesis.resume()
+            this.readFlag=2
+          }
+        }catch (e) {
+          toast("您的浏览器暂不支持此功能，请下载最新版谷歌浏览器体验在线阅读",5000)
+        }
+
+      },
       back(){
+        try {
+          window.speechSynthesis.cancel()
+        }catch (e) {}
         location.href='/bookinfo/'+this.bookid
       },
       mulu(){
+        try {
+          window.speechSynthesis.cancel()
+        }catch (e) {}
         location.href='/chapterlist/'+this.bookid
       },
       previous(){
+        try {
+          window.speechSynthesis.cancel()
+        }catch (e) {}
         if(!this.lastNum){
           toast('已经是第一章喽~')
           return
@@ -122,6 +164,9 @@
         location.href='/book/'+this.lastNum.chapterid
       },
       nuxt(){
+        try {
+          window.speechSynthesis.cancel()
+        }catch (e) {}
         if(!this.nextNum){
           toast('已经是最后一章喽~')
           return
@@ -221,8 +266,15 @@
   }
 
   .top-right {
+    position relative
     float: right;
     margin-right: 16px;
+    span,img{
+      vertical-align middle
+    }
+    img{
+      padding-left 10px
+    }
   }
 
   .top-right span {
