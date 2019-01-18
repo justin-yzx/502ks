@@ -1,0 +1,106 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+#app .whiteColor{
+    color: #989898;
+}
+.content-box-p{
+    min-height: 800px;
+    padding: 50px 16px 130px;
+    white-space: pre-line;
+    font-weight: 300;
+}
+.top-operate-zone{
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 500;
+    height: 44px;
+    background:#333;
+}
+.top-back{
+    float: left;
+    padding: 10px;
+}
+.top-back img{
+    width: 22px;
+    opacity: .8;
+}
+.top-right{
+    float: right;
+    margin-right: 16px;
+}
+.top-right span{
+    margin-left: 10px;
+    line-height: 44px;
+    color: #fff;
+    font-weight: 300;
+    vertical-align: middle;
+}
+.top-right img{
+    vertical-align: middle;
+}
+.operate-zone{
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 500;
+}
+.zone-1{
+    color: #fff;
+    background: #333;
+    padding: 5px 0;
+    overflow: hidden;
+}
+.zone-1 span{
+    width: 20%;
+    display: block;
+    float: left;
+    text-align: center;
+}
+.zone-1 span img{
+    display:block;
+    width: 22px;
+    height: 22px;
+    margin: 0px auto;
+}
+.zone-1 span em{
+    font-style: normal;
+    font-size: 14px;
+    font-weight: 300;
+}
+.zone-2{
+    background: rgba(0,0,0,.4);
+    padding: 10px;
+    overflow: hidden;
+}
+.colors-arr{
+   overflow: hidden;
+    margin-bottom: 10px;
+}
+.colors-arr span,.font-sizes span{
+    width: 40px;
+    height: 20px;
+    display: block;
+    float: left;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    margin-right: 10px;
+}
+.colors-arr span.active{
+    border: 2px solid #26C37D;
+}
+.font-sizes span{
+    color: #fff;
+    background: rgba(0,0,0,.4);
+    text-align: center;
+    line-height: 20px;
+    font-size: 12px;
+}
