@@ -50,7 +50,7 @@
   export default {
     name: "Id",
     components:{
-      threebook
+      threebook,
     },
     data(){
       return{

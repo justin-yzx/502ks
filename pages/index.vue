@@ -1,5 +1,6 @@
 <template>
   <div>
+    <bottom :tag="2"/>
     <backtop/>
     <div
       class="search"
@@ -29,6 +30,7 @@
     />
     <bookblock2
       :bookitem="bookData[5]"
+      style="margin-bottom: 55px"
       title="老书虫必读"
     />
   </div>
@@ -41,12 +43,16 @@
   import bookblock1 from '@/components/BookBlock1'
   import bookblock2 from '@/components/BookBlock2'
   import backtop from '@/components/backtop'
+  import bottom from '@/components/Bottom'
+
   export default {
     components:{
       bookitem,
       bookblock1,
       bookblock2,
-      backtop
+      backtop,
+      bottom,
+
     },
     async asyncData () {
       let { data } = await axios.get(BASE_URL+'/api/getindexlist')
