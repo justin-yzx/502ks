@@ -1,38 +1,38 @@
 <template>
   <div class="bottom-bar">
-    <div 
-      :class="tag==1?'active':''" 
-      class="bar-btn" 
+    <div
+      :class="tag==1?'active':''"
+      class="bar-btn"
       @click="choose(1)">
-      <img 
-        class="img1" 
+      <img
+        class="img1"
         src="@/assets/booksp.png">
-      <img 
+      <img
         class="img2"
         src="@/assets/booksp-active.png">
       <span>书架</span>
     </div>
-    <div 
-      :class="tag==2?'active':''" 
-      class="bar-btn" 
+    <div
+      :class="tag==2?'active':''"
+      class="bar-btn"
       @click="choose(2)">
-      <img 
-        class="img1" 
+      <img
+        class="img1"
         src="@/assets/book.png">
-      <img 
-        class="img2" 
+      <img
+        class="img2"
         src="@/assets/book-active.png">
       <span>书城</span>
     </div>
-    <div 
-      :class="tag==3?'active':''" 
-      class="bar-btn" 
+    <div
+      :class="tag==3?'active':''"
+      class="bar-btn"
       @click="choose(3)">
-      <img 
-        class="img1" 
+      <img
+        class="img1"
         src="@/assets/class.png">
-      <img 
-        class="img2" 
+      <img
+        class="img2"
         src="@/assets/class-active.png">
       <span>分类</span>
     </div>
@@ -52,13 +52,13 @@
     methods:{
       choose(num){
         if(num==1&&num!=this.tag){
-          console.log(1)
+          location.href='/bookshelf'
         }
         if(num==2&&num!=this.tag){
-          console.log(2)
+          location.href='/'
         }
         if(num==3&&num!=this.tag){
-          console.log(3)
+          toast('敬请期待')
         }
       }
     }

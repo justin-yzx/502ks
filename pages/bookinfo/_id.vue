@@ -33,11 +33,15 @@
       </div>
     </div>
     <div class="bottom">
-      <div 
-        class="bottom-btn join" 
+      <div
+        v-if="!hasBook"
+        class="bottom-btn join"
         @click="join">加入书架</div>
-      <div 
-        class="bottom-btn" 
+      <div
+        v-if="hasBook"
+        class="bottom-btn join">已在书架</div>
+      <div
+        class="bottom-btn"
         @click="read">立即阅读</div>
     </div>
   </div>
@@ -60,7 +64,8 @@
         muName:'',
         muId:'',
         oldNum:1,
-        bookList:[]
+        bookList:[],
+        bookshelf:[],
       }
     },
     async asyncData({params}){
@@ -71,6 +76,7 @@
           desc:data.data[0]['desc'],
           img:data.data[0]['img'],
           bookauther:data.data[0]['bookauther'],
+          type:data.data[0]['type'],
         }
       }else {
         return{
@@ -98,6 +104,19 @@
         }else {
           return []
         }
+      },
+      hasBook(){
+        for(let i=0;i<this.bookshelf.length;i++){
+          if(this.bookshelf[i]['bookid'] === this.bookid){
+            return true
+          }
+        }
+        return false
+      }
+    },
+    watch:{
+      bookshelf(){
+        localStorage.bookshelf=JSON.stringify(this.bookshelf)
       }
     },
     mounted(){
@@ -126,14 +145,43 @@
         let data=res.data
         this.bookList=data.data
       })
+
+      let bookArr=localStorage.getItem('bookshelf')
+
+      if(!bookArr){
+        localStorage.bookshelf='[]'
+        bookArr='[]'
+      }else {
+        try{
+          let bookArrObj=JSON.parse(bookArr)
+          if(typeof bookArrObj === 'object'){
+            this.bookshelf=bookArrObj
+          }else {
+            this.bookshelf=[]
+          }
+        }catch (e) {
+          this.bookshelf=[]
+        }
+      }
+
     },
+
     methods:{
       gochapter(){
         this.$router.push('/chapterlist/'+this.bookid)
       },
       join(){
-        //todo 加入书架
-        toast('敬请期待')
+        if(this.hasBook){
+          return
+        }
+        this.bookshelf.push({
+          img:this.img,
+          bookname:this.bookname,
+          bookauther:this.bookauther,
+          type:this.type,
+          desc:this.desc,
+          bookid:this.bookid,
+        })
       },
       read(){
         if(this.muId){
@@ -142,7 +190,7 @@
           toast('暂无书籍信息')
         }
       }
-    }
+    },
   }
 </script>
 
