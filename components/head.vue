@@ -1,6 +1,8 @@
 <template>
   <div class="head">
-    <div class="left">
+    <div
+      v-if="show"
+      class="left">
       <img
         src="@/assets/back.png"
         @click="back"
@@ -20,11 +22,21 @@
         type: String,
         defult: '',
         required: true
+      },
+      backurl:{
+        type: String,
+        defult: '/',
+        required: true
+      },
+      show:{
+        type: Boolean,
+        defult: true,
+        required: true
       }
     },
     methods: {
       back() {
-        history.back()
+        location.href=this.backurl
       }
     }
   }
@@ -59,7 +71,6 @@
       width 100%
       line-height 44px
       font-size 16px
-      font-weight 600
       text-align center
     }
   }

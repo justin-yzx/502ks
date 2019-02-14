@@ -1,5 +1,11 @@
 <template>
   <div>
+    <headdiv
+      :show="false"
+      title="书架"
+      backurl=""
+    />
+    <div style="height: 50px"/>
     <bottom :tag="1"/>
     <backtop/>
     <div
@@ -17,6 +23,7 @@
   import bottom from '@/components/Bottom'
   import backtop from '@/components/backtop'
   import bookitem from '@/components/BookItem'
+  import headdiv from '@/components/head'
 
 
   export default {
@@ -25,6 +32,7 @@
       bottom,
       backtop,
       bookitem,
+      headdiv
     },
     data(){
       return{

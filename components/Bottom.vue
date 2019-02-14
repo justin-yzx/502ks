@@ -58,7 +58,7 @@
           location.href='/'
         }
         if(num==3&&num!=this.tag){
-          toast('敬请期待')
+          location.href='/classify'
         }
       }
     }
