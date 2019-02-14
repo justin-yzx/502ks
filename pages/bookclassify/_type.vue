@@ -12,15 +12,17 @@
       :key="index"
       :book-data="item"
     />
-    <infinite-loading
-      @infinite="infiniteHandler">
-      <span
-        slot="no-more"
-        class="nomore">没有更多数据了</span>
-      <span
-        slot="no-results"
-        class="nomore">没有更多数据了</span>
-    </infinite-loading>
+    <no-ssr>
+      <infinite-loading
+        @infinite="infiniteHandler">
+        <span
+          slot="no-more"
+          class="nomore">没有更多数据了</span>
+        <span
+          slot="no-results"
+          class="nomore">没有更多数据了</span>
+      </infinite-loading>
+    </no-ssr>
   </div>
 </template>
 
@@ -32,29 +34,29 @@
 
   export default {
     name: "Bookshelf",
-    components:{
+    components: {
       backtop,
       headdiv,
       bookitem,
     },
-    data(){
-      return{
-        booklist:[],
+    data() {
+      return {
+        booklist: [],
         pagenum: 1,
         pagesize: 20,
-        type:{
-          'xuanhuan':'玄幻',
-          'xianxia':'仙侠',
-          'junshi':'军事',
-          'lishi':'历史',
-          'yanqing':'言情',
-          'dushi':'都市',
-          'wuxia':'武侠',
+        type: {
+          'xuanhuan': '玄幻',
+          'xianxia': '仙侠',
+          'junshi': '军事',
+          'lishi': '历史',
+          'yanqing': '言情',
+          'dushi': '都市',
+          'wuxia': '武侠',
         }
       }
     },
-    methods:{
-      infiniteHandler($state){
+    methods: {
+      infiniteHandler($state) {
         this.$axios.get('/api/getclassifydetail', {
           params: {
             type: this.$route.params.type,
@@ -77,10 +79,11 @@
 </script>
 
 <style scoped lang="stylus">
-  .none{
+  .none {
     text-align center
     padding-top 50px
   }
+
   .nomore {
     font-size 10px
     color #7f828b
