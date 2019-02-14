@@ -2,6 +2,11 @@
   <div>
     <backtop/>
     <div class="search-top">
+      <img
+        class="back"
+        src="@/assets/back.png"
+        @click="back"
+      >
       <div class="search-box">
         <img src="@/assets/search.png">
         <input 
@@ -134,6 +139,13 @@
       historySearch(str){
         this.str=str;
         this.search()
+      },
+      back(){
+        if(history.length<=2){
+          location.href='/'
+        }else {
+          history.back()
+        }
       }
     },
   }
@@ -187,12 +199,17 @@
     background: white;
     align-items center
     justify-content center
+
+    .back{
+      margin-right 10px
+    }
+
     .search-btn{
       color: #6a7a8a;
       padding-left 10px
     }
     .search-box{
-      width 80%
+      width 74%
       display flex
       align-items center
       background #f4f6f8

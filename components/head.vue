@@ -8,6 +8,13 @@
         @click="back"
       >
     </div>
+    <div
+      class="right">
+      <img
+        src="@/assets/search.png"
+        @click="search"
+      >
+    </div>
     <div class="title">
       {{ title }}
     </div>
@@ -36,7 +43,18 @@
     },
     methods: {
       back() {
-        location.href=this.backurl
+        if(this.backurl === 'goback'){
+          if(history.length<=2){
+            location.href='/'
+          }else {
+            history.back()
+          }
+        }else {
+          location.href=this.backurl
+        }
+      },
+      search(){
+        location.href='/search'
       }
     }
   }
@@ -59,6 +77,19 @@
 
       img {
         width 32px
+        display block
+        z-index 2
+      }
+    }
+
+    .right {
+      position absolute
+      right 15px
+      top 12px
+      z-index 5
+
+      img {
+        width 20px
         display block
         z-index 2
       }

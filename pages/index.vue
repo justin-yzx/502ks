@@ -99,7 +99,7 @@
       height 16px
       line-height 16px
       font-size 12px
-      color #7f828b
+      color #2c2c2c
     }
   }
 </style>

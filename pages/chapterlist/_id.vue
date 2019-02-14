@@ -2,7 +2,9 @@
   <div>
     <backtop />
     <headNav
+      :show="true"
       title="章节"
+      backurl="goback"
     />
     <div class="book-box">
       <div class="book-name">{{ bookname }}</div>
